@@ -11,7 +11,10 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@types/three": "^0.158.2",
+    "@vueuse/core": "^10.6.1",
     "nuxt": "^3.8.1",
+    "three": "^0.158.0",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5"
   }
