@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import * as THREE from 'three';
-import { useWindowSize} from "@vueuse/core";
+import { useWindowSize } from "@vueuse/core";
 import {PerspectiveCamera, WebGLRenderer} from "three";
 
 const threeCanvas = ref()
-let scene = ref()
-let camera = ref()
-let cube = ref()
+const scene = ref()
+const camera = ref()
+const cube = ref()
 let renderer: WebGLRenderer | null = null
 
 const addCube = (camera: PerspectiveCamera) => {
@@ -45,7 +45,12 @@ onMounted(() => {
   <div>
     <h1>Hello animation guys</h1>
 
-    <canvas ref="threeCanvas" id="c" width="500" height="500"></canvas>
+    <canvas
+      id="c"
+      ref="threeCanvas"
+      width="500"
+      height="500"
+    />
   </div>
 </template>
 
