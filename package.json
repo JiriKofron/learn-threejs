@@ -21,6 +21,7 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "@nuxt/eslint-config": "^0.2.0"
+    "@nuxt/eslint-config": "^0.2.0",
+    "gsap": "^3.12.2"
   }
 }
