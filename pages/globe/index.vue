@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as THREE from "three";
 import gsap from 'gsap'
-import {Scene} from "three";
+import {Camera, Scene} from "three";
 import {useWindowSize, useMouse, useMousePressed} from "@vueuse/core/index";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import vertexShader from './shaders/vertex.glsl?raw'
@@ -13,13 +13,15 @@ console.log(vertexShader)
 
 const threeCanvas = ref()
 let scene: Scene | null = null
-const camera = ref()
+let camera: Camera | null = null
 const renderer= ref()
 const windowWidth = ref()
 const windowHeight = ref()
 
 let pointLight: any = null
 let sphere: any = null
+let stars: any = null
+
 let canvas: HTMLCanvasElement | null = null
 let controls: OrbitControls | null = null
 
@@ -37,9 +39,9 @@ const defineRenderer = () => {
 }
 
 const defineCamera = () => {
-  camera.value = new THREE.PerspectiveCamera( 65, windowWidth.value / windowHeight.value, 0.1, 1000);
+  camera = new THREE.PerspectiveCamera( 65, windowWidth.value / windowHeight.value, 0.1, 1000);
 
-  camera.value.position.setZ(10)
+  camera.position.setZ(10)
 }
 
 const defineLight = () => {
@@ -54,7 +56,7 @@ const defineHelpers = () => {
 }
 
 const defineControls = () => {
-  controls = new OrbitControls(camera.value, (canvas as HTMLCanvasElement))
+  controls = new OrbitControls((camera as Camera), (canvas as HTMLCanvasElement))
   controls.enableDamping = true
   controls.autoRotate = true
   controls.autoRotateSpeed = 1
@@ -90,6 +92,31 @@ const addAtmo = () => {
   scene?.add(atmosphere)
 }
 
+const addStars = () => {
+  const starGeometry = new THREE.BufferGeometry()
+  const starMaterial = new THREE.PointsMaterial({ color: 0xffffff})
+
+  const starVerticles = []
+
+  for(let i = 0; i < 10000; i++) {
+    const x = (Math.random() - 0.5) * 2000
+    const y = (Math.random() - 0.5) * 2000
+    const z = -Math.random() * 1000
+
+    starVerticles.push(x, y, z)
+  }
+
+  starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVerticles, 3))
+
+  stars = new THREE.Points(starGeometry, starMaterial)
+  // scene?.add(stars)
+
+  scene?.add((camera as Camera))
+  camera?.add(stars)
+  stars.position.set(0, 0, -100)
+  console.log(stars)
+}
+
 const init = () => {
   const { width, height } = useWindowSize()
   windowWidth.value = width.value
@@ -103,7 +130,7 @@ const init = () => {
 
 
   gsap.ticker.add(() => {
-    renderer.value?.render((scene as Scene), camera.value)
+    renderer.value?.render((scene as Scene), camera)
   })
 }
 
@@ -116,6 +143,8 @@ onMounted(() => {
   init()
   addGlobe()
   addAtmo()
+  addStars()
+
   defineControls()
 
   animate()
