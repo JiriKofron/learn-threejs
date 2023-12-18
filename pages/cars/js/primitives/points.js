@@ -1,10 +1,9 @@
-export const Point = (x, y) => {
-
+export const Point = (x, y, color) => {
     const equals = (point) => {
         return x === point.x && y === point.y
     }
 
-    const draw = (ctx, size = 42, color = 'red') => {
+    const draw = (ctx, size = 42) => {
         const rad = size/2;
         ctx.beginPath()
         ctx.fillStyle = color;
@@ -15,6 +14,7 @@ export const Point = (x, y) => {
     return {
         x,
         y,
+        color,
         draw,
         equals
     }

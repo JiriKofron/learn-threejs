@@ -20,6 +20,11 @@ export const Graph = (points = [], segments = []) => {
     }
 
     const removePoint = point => {
+        if(points.length === 0) {
+            console.log('no points')
+            return
+        }
+
         const segs = getSegmentsWithPoint(point);
         for (const seg of segs) {
             removeSegment(seg)
@@ -57,7 +62,6 @@ export const Graph = (points = [], segments = []) => {
     }
 
     const removeSegment = seg => {
-        console.log(segments)
         segments.splice(segments.indexOf(seg), 1)
     }
 
